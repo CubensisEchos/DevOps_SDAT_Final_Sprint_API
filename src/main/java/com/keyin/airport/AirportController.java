@@ -41,7 +41,7 @@ public class AirportController
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/airport/{id}")
     public ResponseEntity<Void> deleteAirport(@PathVariable Long id)
     {
         boolean deleted = airportService.deleteAirport(id);
