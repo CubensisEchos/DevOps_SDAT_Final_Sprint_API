@@ -25,7 +25,7 @@ public class AirlineController
         return ResponseEntity.ok(airlineService.getAllAirlines());
     }
 
-    @PutMapping("/airline/{id}")
+    @GetMapping("/airline/{id}")
     public ResponseEntity<Airline> getAirlineById(@PathVariable Long id)
     {
         return airlineService.getAirlineById(id)

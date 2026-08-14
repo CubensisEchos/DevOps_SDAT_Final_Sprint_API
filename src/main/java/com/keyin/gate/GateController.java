@@ -51,4 +51,10 @@ public class GateController
         }
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/gate/airport/{airportId}")
+    public List<Gate> getGatesByAirport(@PathVariable Long airportId)
+    {
+        return gateService.getGatesByAirport(airportId);
+    }
 }

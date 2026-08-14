@@ -1,9 +1,12 @@
 package com.keyin.airport;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.keyin.flight.Flight;
+import com.keyin.gate.Gate;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Airport
@@ -16,6 +19,18 @@ public class Airport
     private String city;
     private String province;
     private String Country;
+
+    @JsonManagedReference("airport-gate")
+    @OneToMany(mappedBy = "airport")
+    private List<Gate> gates = new ArrayList<>();
+
+    @JsonManagedReference("airport-departure-flight")
+    @OneToMany(mappedBy = "departureAirport")
+    private List<Flight> departures = new ArrayList<>();
+
+    @JsonManagedReference("airport-arrival-flight")
+    @OneToMany(mappedBy = "arrivalAirport")
+    private List<Flight> arrivals = new ArrayList<>();
 
     public Airport()
     {
@@ -101,16 +116,33 @@ public class Airport
         Country = country;
     }
 
-    @Override
-    public String toString()
+    public List<Gate> getGates()
     {
-        return "airport{" +
-                "id=" + id +
-                ", airportName='" + airportName + '\'' +
-                ", airportCode='" + airportCode + '\'' +
-                ", city='" + city + '\'' +
-                ", province='" + province + '\'' +
-                ", Country='" + Country + '\'' +
-                '}';
+        return gates;
+    }
+
+    public void setGates(List<Gate> gates)
+    {
+        this.gates = gates;
+    }
+
+    public List<Flight> getDepartures()
+    {
+        return departures;
+    }
+
+    public void setDepartures(List<Flight> departures)
+    {
+        this.departures = departures;
+    }
+
+    public List<Flight> getArrivals()
+    {
+        return arrivals;
+    }
+
+    public void setArrivals(List<Flight> arrivals)
+    {
+        this.arrivals = arrivals;
     }
 }

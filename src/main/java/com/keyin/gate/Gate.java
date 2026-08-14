@@ -1,9 +1,13 @@
 package com.keyin.gate;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.keyin.airport.Airport;
+import com.keyin.flight.Flight;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Gate
@@ -12,6 +16,15 @@ public class Gate
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String gateNumber;
+
+    @JsonBackReference("airport-gate")
+    @ManyToOne
+    @JoinColumn(name = "airport_id")
+    private Airport airport;
+
+    @JsonManagedReference("gate-flight")
+    @OneToMany(mappedBy = "gate")
+    private List<Flight> flights = new ArrayList<>();
 
     public Gate()
     {
@@ -41,5 +54,25 @@ public class Gate
     public void setGateNumber(String gateNumber)
     {
         this.gateNumber = gateNumber;
+    }
+
+    public Airport getAirport()
+    {
+        return airport;
+    }
+
+    public void setAirport(Airport airport)
+    {
+        this.airport = airport;
+    }
+
+    public List<Flight> getFlights()
+    {
+        return flights;
+    }
+
+    public void setFlights(List<Flight> flights)
+    {
+        this.flights = flights;
     }
 }

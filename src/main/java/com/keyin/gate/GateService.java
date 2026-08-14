@@ -44,4 +44,9 @@ public class GateService
         }
         return false;
     }
+
+    public List<Gate> getGatesByAirport(Long airportId)
+    {
+        return gateRepository.findByAirportId(airportId);
+    }
 }

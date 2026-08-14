@@ -130,4 +130,24 @@ public class GateServiceTest
 
         Assertions.assertTrue(expected.isEmpty());
     }
+
+    @Test
+    public void getGatesByAirport_ReturnsGatesWhenFound()
+    {
+        Mockito.when(gateRepository.findByAirportId(1L)).thenReturn(gateList);
+        List<Gate> expected = gateService.getGatesByAirport(1L);
+
+        Assertions.assertEquals(gateList, expected);
+        verify(gateRepository).findByAirportId(1L);
+    }
+
+    @Test
+    public void getGatesByAirport_ReturnsEmptyWhenMissing()
+    {
+        Mockito.when(gateRepository.findByAirportId(88L)).thenReturn(List.of());
+        List<Gate> expected = gateService.getGatesByAirport(88L);
+
+        Assertions.assertTrue(expected.isEmpty());
+        verify(gateRepository).findByAirportId(88L);
+    }
 }

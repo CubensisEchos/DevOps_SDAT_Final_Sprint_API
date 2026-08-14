@@ -1,9 +1,13 @@
 package com.keyin.aircraft;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.keyin.airline.Airline;
+import com.keyin.flight.Flight;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Aircraft
@@ -13,6 +17,15 @@ public class Aircraft
     private Long id;
     private String AircraftName;
     private int numberOfPassengers;
+
+    @JsonBackReference("airline-aircraft")
+    @ManyToOne
+    @JoinColumn(name = "airline_id")
+    private Airline airline;
+
+    @JsonManagedReference("aircraft-flight")
+    @OneToMany(mappedBy = "aircraft")
+    private List<Flight> flights = new ArrayList<>();
 
     public Aircraft()
     {
@@ -60,5 +73,25 @@ public class Aircraft
     public void setNumberOfPassengers(int numberOfPassengers)
     {
         this.numberOfPassengers = numberOfPassengers;
+    }
+
+    public Airline getAirline()
+    {
+        return airline;
+    }
+
+    public void setAirline(Airline airline)
+    {
+        this.airline = airline;
+    }
+
+    public List<Flight> getFlights()
+    {
+        return flights;
+    }
+
+    public void setFlights(List<Flight> flights)
+    {
+        this.flights = flights;
     }
 }
