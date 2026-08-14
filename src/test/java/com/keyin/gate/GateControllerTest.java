@@ -143,4 +143,24 @@ public class GateControllerTest
 
         Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
+
+    @Test
+    public void getGatesByAirport_ReturnsGatesWhenFound()
+    {
+        Mockito.when(gateService.getGatesByAirport(1L)).thenReturn(gateList);
+        List<Gate> response = gateController.getGatesByAirport(1L);
+
+        Assertions.assertEquals(gateList, response);
+        verify(gateService).getGatesByAirport(1L);
+    }
+
+    @Test
+    public void getGatesByAirport_ReturnsEmptyWhenMissing()
+    {
+        Mockito.when(gateService.getGatesByAirport(88L)).thenReturn(List.of());
+        List<Gate> response = gateController.getGatesByAirport(88L);
+
+        Assertions.assertTrue(response.isEmpty());
+        verify(gateService).getGatesByAirport(88L);
+    }
 }

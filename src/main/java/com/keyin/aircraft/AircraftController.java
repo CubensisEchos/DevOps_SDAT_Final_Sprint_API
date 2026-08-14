@@ -25,7 +25,7 @@ public class AircraftController
         return ResponseEntity.ok(aircraftService.getAllAircraft());
     }
 
-    @PutMapping("/aircraft/{id}")
+    @GetMapping("/aircraft/{id}")
     public ResponseEntity<Aircraft> getAircraftById(@PathVariable Long id)
     {
         return aircraftService.getAircraftById(id)

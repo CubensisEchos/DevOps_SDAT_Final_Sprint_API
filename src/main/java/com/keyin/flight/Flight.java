@@ -1,9 +1,13 @@
 package com.keyin.flight;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.keyin.aircraft.Aircraft;
+import com.keyin.airline.Airline;
+import com.keyin.airport.Airport;
 import com.keyin.enums.FlightStatus;
+import com.keyin.gate.Gate;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,6 +22,31 @@ public class Flight
 
     @Enumerated(EnumType.STRING)
     private FlightStatus status;
+
+    @JsonBackReference("airline-flight")
+    @ManyToOne
+    @JoinColumn(name = "airline_id")
+    private Airline airline;
+
+    @JsonBackReference("aircraft-flight")
+    @ManyToOne
+    @JoinColumn(name = "aircraft_id")
+    private Aircraft aircraft;
+
+    @JsonBackReference("airport-departure-flight")
+    @ManyToOne
+    @JoinColumn(name = "departure_airport_id")
+    private Airport departureAirport;
+
+    @JsonBackReference("airport-arrival-flight")
+    @ManyToOne
+    @JoinColumn(name = "arrival_airport_id")
+    private Airport arrivalAirport;
+
+    @JsonBackReference("gate-flight")
+    @ManyToOne
+    @JoinColumn(name = "gate_id")
+    private Gate gate;
 
     public Flight()
     {
@@ -89,5 +118,55 @@ public class Flight
     public void setStatus(FlightStatus status)
     {
         this.status = status;
+    }
+
+    public Airline getAirline()
+    {
+        return airline;
+    }
+
+    public void setAirline(Airline airline)
+    {
+        this.airline = airline;
+    }
+
+    public Aircraft getAircraft()
+    {
+        return aircraft;
+    }
+
+    public void setAircraft(Aircraft aircraft)
+    {
+        this.aircraft = aircraft;
+    }
+
+    public Airport getDepartureAirport()
+    {
+        return departureAirport;
+    }
+
+    public void setDepartureAirport(Airport departureAirport)
+    {
+        this.departureAirport = departureAirport;
+    }
+
+    public Airport getArrivalAirport()
+    {
+        return arrivalAirport;
+    }
+
+    public void setArrivalAirport(Airport arrivalAirport)
+    {
+        this.arrivalAirport = arrivalAirport;
+    }
+
+    public Gate getGate()
+    {
+        return gate;
+    }
+
+    public void setGate(Gate gate)
+    {
+        this.gate = gate;
     }
 }

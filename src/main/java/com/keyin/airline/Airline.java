@@ -1,9 +1,12 @@
 package com.keyin.airline;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.keyin.aircraft.Aircraft;
+import com.keyin.flight.Flight;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Airline
@@ -14,6 +17,14 @@ public class Airline
     private String AirlineName;
     private String AirlineCode;
     private String AirlineCountry;
+
+    @JsonManagedReference("airline-aircraft")
+    @OneToMany(mappedBy = "airline")
+    private List<Aircraft> aircraft = new ArrayList<>();
+
+    @JsonManagedReference("airline-flight")
+    @OneToMany(mappedBy = "airline")
+    private List<Flight> flights = new ArrayList<>();
 
     public Airline()
     {
@@ -73,5 +84,25 @@ public class Airline
     public void setAirlineCountry(String airlineCountry)
     {
         AirlineCountry = airlineCountry;
+    }
+
+    public List<Aircraft> getAircraft()
+    {
+        return aircraft;
+    }
+
+    public void setAircraft(List<Aircraft> aircraft)
+    {
+        this.aircraft = aircraft;
+    }
+
+    public List<Flight> getFlights()
+    {
+        return flights;
+    }
+
+    public void setFlights(List<Flight> flights)
+    {
+        this.flights = flights;
     }
 }

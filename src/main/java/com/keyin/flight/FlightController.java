@@ -8,47 +8,56 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-public class FlightController
-{
+public class FlightController {
     @Autowired
     private FlightService flightService;
 
     @PostMapping("/flight")
-    public Flight addNewFlight(@RequestBody Flight flight)
-    {
+    public Flight addNewFlight(@RequestBody Flight flight) {
         return flightService.addNewFlight(flight);
     }
 
     @GetMapping("/flight")
-    public ResponseEntity<List<Flight>> getAllFlights()
-    {
+    public ResponseEntity<List<Flight>> getAllFlights() {
         return ResponseEntity.ok(flightService.getAllFlights());
     }
 
-    @PutMapping("/flight/{id}")
-    public ResponseEntity<Flight> getFlightById(@PathVariable Long id)
-    {
+    @GetMapping("/flight/{id}")
+    public ResponseEntity<Flight> getFlightById(@PathVariable Long id) {
         return flightService.getFlightById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/flight/{id}")
-    public ResponseEntity<Flight> updateFlight(@PathVariable Long id, @RequestBody Flight flight)
-    {
+    public ResponseEntity<Flight> updateFlight(@PathVariable Long id, @RequestBody Flight flight) {
         return flightService.updateFlight(id, flight)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/flight/{id}")
-    public ResponseEntity<Void> deleteFlight(@PathVariable Long id)
-    {
+    public ResponseEntity<Void> deleteFlight(@PathVariable Long id) {
         boolean deleted = flightService.deleteFlightById(id);
-        if (deleted)
-        {
+        if (deleted) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/departures/{airportId}")
+    public List<Flight> getDepartures(@PathVariable Long airportId) {
+        return flightService.getDepartures(airportId);
+    }
+
+    @GetMapping("/arrivals/{airportId}")
+    public List<Flight> getArrivals(@PathVariable Long airportId) {
+        return flightService.getArrivals(airportId);
+    }
+
+    @GetMapping("/airline/{airlineId}")
+    public List<Flight> getFlightsByAirline(@PathVariable Long airlineId)
+    {
+        return flightService.getFlightsByAirline(airlineId);
     }
 }

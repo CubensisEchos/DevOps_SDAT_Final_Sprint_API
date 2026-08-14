@@ -1,6 +1,8 @@
 package com.keyin.flight;
 
+import com.keyin.aircraft.Aircraft;
 import com.keyin.enums.FlightStatus;
+import com.keyin.gate.Gate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -164,5 +166,109 @@ public class FlightServiceTest
 
         Assertions.assertFalse(deleted);
         verify(flightRepository, never()).deleteById(anyLong());
+    }
+
+    @Test
+    public void getDepartures_ReturnsFlightsWhenFound()
+    {
+        Mockito.when(flightRepository.findByDepartureAirportId(1L)).thenReturn(flightList);
+        List<Flight> expected = flightService.getDepartures(1L);
+
+        Assertions.assertEquals(flightList, expected);
+        verify(flightRepository).findByDepartureAirportId(1L);
+    }
+
+    @Test
+    public void getDepartures_ReturnsEmptyWhenMissing()
+    {
+        Mockito.when(flightRepository.findByDepartureAirportId(88L)).thenReturn(List.of());
+        List<Flight> expected = flightService.getDepartures(88L);
+
+        Assertions.assertTrue(expected.isEmpty());
+        verify(flightRepository).findByDepartureAirportId(88L);
+    }
+
+    @Test
+    public void getArrivals_ReturnsFlightsWhenFound()
+    {
+        Mockito.when(flightRepository.findByArrivalAirportId(1L)).thenReturn(flightList);
+        List<Flight> expected = flightService.getArrivals(1L);
+
+        Assertions.assertEquals(flightList, expected);
+        verify(flightRepository).findByArrivalAirportId(1L);
+    }
+
+    @Test
+    public void getArrivals_ReturnsEmptyWhenMissing()
+    {
+        Mockito.when(flightRepository.findByArrivalAirportId(88L)).thenReturn(List.of());
+        List<Flight> expected = flightService.getArrivals(88L);
+
+        Assertions.assertTrue(expected.isEmpty());
+        verify(flightRepository).findByArrivalAirportId(88L);
+    }
+
+    @Test
+    public void getFlightsByAirline_ReturnsFlightsWhenFound()
+    {
+        Mockito.when(flightRepository.findByAirlineId(1L)).thenReturn(flightList);
+        List<Flight> expected = flightService.getFlightsByAirline(1L);
+
+        Assertions.assertEquals(flightList, expected);
+        verify(flightRepository).findByAirlineId(1L);
+    }
+
+    @Test
+    public void getFlightsByAirline_ReturnsEmptyWhenMissing()
+    {
+        Mockito.when(flightRepository.findByAirlineId(88L)).thenReturn(List.of());
+        List<Flight> expected = flightService.getFlightsByAirline(88L);
+
+        Assertions.assertTrue(expected.isEmpty());
+        verify(flightRepository).findByAirlineId(88L);
+    }
+
+    @Test
+    public void getDepartures_ReturnsFlightWithGateAircraftAndDepartureTime()
+    {
+        Gate gate = new Gate();
+        gate.setGateNumber("A12");
+
+        Aircraft aircraft = new Aircraft();
+        aircraft.setAircraftName("Test name");
+
+        flight.setGate(gate); flight.setAircraft(aircraft);
+        flight.setScheduledDepartureTime(LocalDateTime.of(2026, 8, 13, 22, 30));
+
+        Mockito.when(flightRepository.findByDepartureAirportId(1L)).thenReturn(List.of(flight));
+        List<Flight> expected = flightService.getDepartures(1L);
+
+        Assertions.assertEquals(1, expected.size());
+        Assertions.assertEquals("A12", expected.get(0).getGate().getGateNumber());
+        Assertions.assertEquals("Test name", expected.get(0).getAircraft().getAircraftName());
+        Assertions.assertEquals(LocalDateTime.of(2026, 8, 13, 22, 30), expected.get(0).getScheduledDepartureTime());
+        verify(flightRepository).findByDepartureAirportId(1L);
+    }
+
+    @Test
+    public void getArrivals_ReturnsFlightWithGateAircraftAndArrivalTime()
+    {
+        Gate gate = new Gate();
+        gate.setGateNumber("B7");
+
+        Aircraft aircraft = new Aircraft();
+        aircraft.setAircraftName("Test name");
+
+        flight.setGate(gate); flight.setAircraft(aircraft);
+        flight.setScheduledArrival(LocalDateTime.of(2026, 8, 13, 18, 45));
+
+        Mockito.when(flightRepository.findByArrivalAirportId(1L)).thenReturn(List.of(flight));
+        List<Flight> expected = flightService.getArrivals(1L);
+
+        Assertions.assertEquals(1, expected.size());
+        Assertions.assertEquals("B7", expected.get(0).getGate().getGateNumber());
+        Assertions.assertEquals("Test name", expected.get(0).getAircraft().getAircraftName());
+        Assertions.assertEquals(LocalDateTime.of(2026, 8, 13, 18, 45), expected.get(0).getScheduledArrival());
+        verify(flightRepository).findByArrivalAirportId(1L);
     }
 }
