@@ -4,6 +4,7 @@ import com.keyin.aircraft.AircraftRepository;
 import com.keyin.airline.AirlineRepository;
 import com.keyin.airport.AirportRepository;
 import com.keyin.gate.GateRepository;
+import com.keyin.flight.dto.FlightResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,14 +70,16 @@ public class FlightService
         return false;
     }
 
-    public List<Flight> getDepartures(Long airportId)
+    public List<FlightResponseDto> getDepartures(Long airportId)
     {
-        return flightRepository.findByDepartureAirportId(airportId);
+        return flightRepository.findByDepartureAirportId(airportId).stream()
+                .map(flight -> FlightResponseDto.from(flight, flight.getScheduledDepartureTime().toString())).toList();
     }
 
-    public List<Flight> getArrivals(Long airportId)
+    public List<FlightResponseDto> getArrivals(Long airportId)
     {
-        return flightRepository.findByArrivalAirportId(airportId);
+        return flightRepository.findByArrivalAirportId(airportId).stream()
+                .map(flight -> FlightResponseDto.from(flight, flight.getScheduledArrival().toString())).toList();
     }
 
     public List<Flight> getFlightsByAirline(Long airlineId)
