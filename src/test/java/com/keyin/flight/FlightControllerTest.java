@@ -2,6 +2,7 @@ package com.keyin.flight;
 
 import com.keyin.aircraft.Aircraft;
 import com.keyin.enums.FlightStatus;
+import com.keyin.flight.dto.FlightResponseDto;
 import com.keyin.gate.Gate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -37,6 +38,7 @@ public class FlightControllerTest
     Flight flight3;
 
     List<Flight> flightList;
+    List<FlightResponseDto> flightResponseList;
 
     @BeforeEach
     void setup()
@@ -63,6 +65,7 @@ public class FlightControllerTest
         );
 
         flightList = List.of(flight, flight2, flight3);
+        flightResponseList = List.of(FlightResponseDto.from(flight, "2026-08-13T22:30"));
     }
 
     @AfterEach
@@ -73,6 +76,7 @@ public class FlightControllerTest
         flight3 = null;
 
         flightList = null;
+        flightResponseList = null;
     }
 
     @Test
@@ -181,10 +185,10 @@ public class FlightControllerTest
     @Test
     public void getDepartures_ReturnsFlightsWhenFound()
     {
-        Mockito.when(flightService.getDepartures(1L)).thenReturn(flightList);
-        List<Flight> response = flightController.getDepartures(1L);
+        Mockito.when(flightService.getDepartures(1L)).thenReturn(flightResponseList);
+        List<FlightResponseDto> response = flightController.getDepartures(1L);
 
-        Assertions.assertEquals(flightList, response);
+        Assertions.assertEquals(flightResponseList, response);
         verify(flightService).getDepartures(1L);
     }
 
@@ -192,7 +196,7 @@ public class FlightControllerTest
     public void getDepartures_ReturnsEmptyWhenMissing()
     {
         Mockito.when(flightService.getDepartures(88L)).thenReturn(List.of());
-        List<Flight> response = flightController.getDepartures(88L);
+        List<FlightResponseDto> response = flightController.getDepartures(88L);
 
         Assertions.assertTrue(response.isEmpty());
         verify(flightService).getDepartures(88L);
@@ -201,10 +205,10 @@ public class FlightControllerTest
     @Test
     public void getArrivals_ReturnsFlightsWhenFound()
     {
-        Mockito.when(flightService.getArrivals(1L)).thenReturn(flightList);
-        List<Flight> response = flightController.getArrivals(1L);
+        Mockito.when(flightService.getArrivals(1L)).thenReturn(flightResponseList);
+        List<FlightResponseDto> response = flightController.getArrivals(1L);
 
-        Assertions.assertEquals(flightList, response);
+        Assertions.assertEquals(flightResponseList, response);
         verify(flightService).getArrivals(1L);
     }
 
@@ -212,7 +216,7 @@ public class FlightControllerTest
     public void getArrivals_ReturnsEmptyWhenMissing()
     {
         Mockito.when(flightService.getArrivals(88L)).thenReturn(List.of());
-        List<Flight> response = flightController.getArrivals(88L);
+        List<FlightResponseDto> response = flightController.getArrivals(88L);
 
         Assertions.assertTrue(response.isEmpty());
         verify(flightService).getArrivals(88L);
@@ -251,13 +255,13 @@ public class FlightControllerTest
         flight.setAircraft(aircraft);
         flight.setScheduledDepartureTime(LocalDateTime.of(2026, 8, 13, 22, 30));
 
-        Mockito.when(flightService.getDepartures(1L)).thenReturn(List.of(flight));
-        List<Flight> response = flightController.getDepartures(1L);
+        Mockito.when(flightService.getDepartures(1L)).thenReturn(List.of(FlightResponseDto.from(flight, "2026-08-13T22:30")));
+        List<FlightResponseDto> response = flightController.getDepartures(1L);
 
         Assertions.assertEquals(1, response.size());
-        Assertions.assertEquals("A12", response.get(0).getGate().getGateNumber());
-        Assertions.assertEquals("Test name", response.get(0).getAircraft().getAircraftName());
-        Assertions.assertEquals(LocalDateTime.of(2026, 8, 13, 22, 30), response.get(0).getScheduledDepartureTime());
+        Assertions.assertEquals("A12", response.get(0).gateNumber());
+        Assertions.assertEquals("Test name", response.get(0).aircraftName());
+        Assertions.assertEquals("2026-08-13T22:30", response.get(0).time());
         verify(flightService).getDepartures(1L);
     }
 
@@ -274,13 +278,13 @@ public class FlightControllerTest
         flight.setAircraft(aircraft);
         flight.setScheduledArrival(LocalDateTime.of(2026, 8, 13, 18, 45));
 
-        Mockito.when(flightService.getArrivals(1L)).thenReturn(List.of(flight));
-        List<Flight> response = flightController.getArrivals(1L);
+        Mockito.when(flightService.getArrivals(1L)).thenReturn(List.of(FlightResponseDto.from(flight, "2026-08-13T18:45")));
+        List<FlightResponseDto> response = flightController.getArrivals(1L);
 
         Assertions.assertEquals(1, response.size());
-        Assertions.assertEquals("B7", response.get(0).getGate().getGateNumber());
-        Assertions.assertEquals("Airbus A320", response.get(0).getAircraft().getAircraftName());
-        Assertions.assertEquals(LocalDateTime.of(2026, 8, 13, 18, 45), response.get(0).getScheduledArrival());
+        Assertions.assertEquals("B7", response.get(0).gateNumber());
+        Assertions.assertEquals("Airbus A320", response.get(0).aircraftName());
+        Assertions.assertEquals("2026-08-13T18:45", response.get(0).time());
         verify(flightService).getArrivals(1L);
     }
 }

@@ -1,5 +1,6 @@
 package com.keyin.flight;
 
+import com.keyin.flight.dto.FlightResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,12 +47,12 @@ public class FlightController {
     }
 
     @GetMapping("/departures/{airportId}")
-    public List<Flight> getDepartures(@PathVariable Long airportId) {
+    public List<FlightResponseDto> getDepartures(@PathVariable Long airportId) {
         return flightService.getDepartures(airportId);
     }
 
     @GetMapping("/arrivals/{airportId}")
-    public List<Flight> getArrivals(@PathVariable Long airportId) {
+    public List<FlightResponseDto> getArrivals(@PathVariable Long airportId) {
         return flightService.getArrivals(airportId);
     }
 
