@@ -8,6 +8,10 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents an airport entity in the system
+ * It stores airport details and its associated gates, and flights
+ */
 @Entity
 public class Airport
 {

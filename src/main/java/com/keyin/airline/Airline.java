@@ -8,6 +8,10 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents an airline entity in the system
+ * It stores airline details, such as airline name and code
+ */
 @Entity
 public class Airline
 {

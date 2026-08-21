@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service layer for managing flight operations
+ * Handles CRUD and linking flights to the needed entities
+ */
 @Service
 public class FlightService
 {

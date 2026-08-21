@@ -5,6 +5,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service layer for managing aircraft operations
+ * Handles CRUD for aircraft
+ */
 @Service
 public class AircraftService
 {

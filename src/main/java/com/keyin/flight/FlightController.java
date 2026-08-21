@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST controller for managing flight resources
+ * Provides endpoints for flight operations
+ */
 @RestController
 @CrossOrigin
 public class FlightController {

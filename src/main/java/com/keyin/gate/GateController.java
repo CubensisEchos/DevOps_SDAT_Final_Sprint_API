@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST controller for managing gate resources
+ * Provides endpoints for CRUD and finding gates by linked airports
+ */
 @RestController
 @CrossOrigin
 public class GateController
