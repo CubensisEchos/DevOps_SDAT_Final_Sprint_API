@@ -5,6 +5,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service layer for managing gate operations
+ * Handles CRUD and finding gates by airport
+ */
 @Service
 public class GateService
 {

@@ -9,6 +9,10 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a gate entity in the system
+ * It stores gate details, such as gate number
+ */
 @Entity
 public class Gate
 {

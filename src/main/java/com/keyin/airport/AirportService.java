@@ -5,6 +5,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service layer for managing airport operations
+ * Handles crud and other operations for airports
+ */
 @Service
 public class AirportService
 {

@@ -10,6 +10,10 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a flight entity in the system
+ * It stores flight details such as status and schedule
+ */
 @Entity
 public class Flight
 {

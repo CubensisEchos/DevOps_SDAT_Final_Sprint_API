@@ -6,6 +6,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST controller for managing airport resources
+ * Provides endpoints for crud
+ */
+
 @RestController
 @CrossOrigin
 public class AirportController

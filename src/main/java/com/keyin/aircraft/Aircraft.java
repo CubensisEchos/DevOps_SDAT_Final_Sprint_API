@@ -9,6 +9,10 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents an aircraft entity in the system
+ * It stores aircraft details such as aircraft name and number of passengers
+ */
 @Entity
 public class Aircraft
 {
